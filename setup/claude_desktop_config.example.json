@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "canvas": {
+      "command": "/path/to/your/repo/canvas-mcp/.venv/bin/python3",
+      "args": [
+        "/path/to/your/repo/canvas-mcp/src/canvas_server.py"
+      ],
+      "env": {
+        "CANVAS_API_TOKEN": "your_token_here",
+        "CANVAS_BASE_URL": "https://canvas.stanford.edu"
+      }
+    }
+  }
+}

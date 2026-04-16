@@ -1,0 +1,22 @@
+# Environment — never commit your token
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Output folders — personal to each user
+drafts/
+prep/
+readings/
+*/Session-*/
+REMINDERS.md
+
+# macOS
+.DS_Store

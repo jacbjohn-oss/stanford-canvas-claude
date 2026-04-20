@@ -55,13 +55,17 @@ All output files are .docx, created via pandoc:
 
 ## STEP 0 — DETERMINE SESSION & FOLDER
 
-1. Call get_course_modules("[[COURSE_ID]]"). Find the module for the upcoming class.
-   Identify the session number (e.g. "Session 5", "Week 3").
-2. Session folder: [[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/
-3. Check if folder exists:
-   - YES → UPDATE run. Read existing .docx files first. Append, never overwrite.
-   - NO → fresh run, create from scratch.
-4. Note prior session numbers — you'll need them for cross-session synthesis in Steps 2 and 3.
+1. List the existing Session folders in [[BASE_DIR]]/[[COURSE_CODE]]/.
+   Find the highest session number already present (e.g. if Session-01 through Session-06
+   exist, the last prepped session is 06).
+2. The target is the NEXT session: last prepped + 1 (e.g. Session-07).
+   Never re-prep a session that already has a folder — always move forward.
+   If NO folders exist yet, start at Session-01.
+3. Call get_course_modules("[[COURSE_ID]]") and match to the target session number.
+4. Session folder: [[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/
+   Create it fresh. If it somehow already exists, do an UPDATE run instead
+   (read existing .docx files first, append, never overwrite).
+5. Note prior session numbers — you'll need them for cross-session synthesis in Steps 2 and 3.
 
 ---
 

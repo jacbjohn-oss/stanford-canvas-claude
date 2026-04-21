@@ -17,9 +17,12 @@
 # Homework drafts are saved as individual .docx files per assignment.
 # Excel/spreadsheet assignments are flagged in REMINDERS — not auto-created.
 
-You are running a prep + homework routine for [[COURSE CODE]] ([[COURSE NAME]]) at Stanford GSB.
+You are running a prep + homework routine for [[COURSE_CODE]] ([[COURSE NAME]]) at Stanford GSB.
 Canvas course ID: [[COURSE_ID]]
 Class meets: [[DAYS]] at [[TIME]] [[ROOM]]
+Obsidian folder: [[OBSIDIAN_FOLDER]]   ← Obsidian folder name for this course (may differ from
+                                          COURSE_CODE, e.g. PolEcon230 vs POLECON230). Used in
+                                          Steps 0.1 and 6 for Obsidian file paths and wiki-links.
 
 ## OPERATING PRINCIPLES
 
@@ -74,6 +77,8 @@ All output files are .docx, created via pandoc:
 
 ---
 
+> **After Step 0 resolves the session numbers, run Steps 0.1 and 0.5 in parallel** — reading the context file and sweeping prior-session materials are independent.
+
 ## STEP 0.1 — READ COURSE CONTEXT
 
 Read the living course intelligence file:
@@ -96,32 +101,33 @@ Before prepping the next session, look back at the session that just ended (Sess
 and pick up anything the instructor posted after class: slides, lecture notes, case solutions,
 recordings, supplementary files.
 
+Skip this step if this is Session-01 (no prior session to sweep).
+
 1. Get the module for Session-[NN-1] via get_course_modules / get_module_items.
-2. For every file item in that module:
-   - Call get_file_info to get filename, size, and download URL.
-   - Check if [[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN-1]/materials/[filename] already exists.
-   - If it does NOT exist, download it:
+2. Run sub-steps 2a and 2b concurrently:
+   **2a — Files:** For every file item in that module:
+   - Use the download URL from the module item response directly. Only call get_file_info
+     if the download URL is absent from the module item.
+   - `mkdir -p "[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN-1]/materials/"` (once, before any downloads)
+   - Download any file not already present:
      `curl -L "[download_url]" -o "[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN-1]/materials/[filename]"`
      (Canvas download URLs are pre-authenticated — no token header needed.)
-   - If the download fails or the URL requires a login, note it instead:
+   - If the download fails or the URL requires a login, note it:
      "⚠️ Could not download [filename] — access manually at [url]"
-3. Also check get_announcements for any post-class announcements referencing Session-[NN-1]
-   (e.g. "here are today's slides", "recording posted", "correction to today's discussion").
-   If found, note the content and any linked files.
-4. If ANY new materials were found:
-   - Create [[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN-1]/materials/ if it doesn't exist.
-   - Append a `## 🔄 Post-Class Materials — [timestamp]` section to the bottom of
-     Session-[NN-1]/prep.docx listing what was added (reconvert via pandoc).
-5. If nothing new was found, move on silently — no need to update anything.
-
-Skip this step entirely if Session-[NN-1] does not exist (i.e. this is the very first run).
+   **2b — Announcements:** get_announcements("[[COURSE_ID]]") — look for any post-class
+   announcement referencing Session-[NN-1] (e.g. "here are today's slides", "recording posted",
+   "correction to today's discussion"). Save the full result; Step 1-A should reuse it.
+3. If ANY new materials were found, append a `## 🔄 Post-Class Materials — [timestamp]` section
+   to the bottom of Session-[NN-1]/prep.docx listing what was added (reconvert via pandoc).
 
 ---
 
 ## STEP 1 — TRIANGULATE (course_id: [[COURSE_ID]])
 
-**A — Announcements:** get_announcements("[[COURSE_ID]]")
-All announcements, last 14 days. Note posted_at timestamps.
+> **Make calls A, B, C, and D concurrently** — all four are independent Canvas API calls.
+
+**A — Announcements:** Reuse the get_announcements result from Step 0.5 if already fetched;
+otherwise call get_announcements("[[COURSE_ID]]") now. All announcements, last 14 days. Note posted_at timestamps.
 Look for: reading changes, clarifications, cold-call warnings, guest speakers, files in bodies.
 On update runs: flag anything newer than last prep.docx modification.
 
@@ -160,7 +166,7 @@ Fetch each reading:
 **Combined document format:**
 
 ```
-# [[COURSE CODE]] — Session [NN] — Reading Summaries and Discussion Prep
+# [[COURSE_CODE]] — Session [NN] — Reading Summaries and Discussion Prep
 *[Author name] | [Month Year]*
 
 ---
@@ -205,7 +211,7 @@ Write at a level where someone could walk into class and discuss this piece with
 
 ## Session Thread
 
-*How this session connects to prior sessions in [[COURSE CODE]]*
+*How this session connects to prior sessions in [[COURSE_CODE]]*
 
 [2–4 sentences. What concept, framework, or tension from a prior session does this session
 extend, complicate, or resolve? Be specific — name the prior session and the link.
@@ -246,7 +252,7 @@ This is not a summary. It is an analytical brief. Use Deep Prep Mode.
 **If creating fresh, use this structure:**
 
 ```
-# [[COURSE CODE]] — Session [NN] Prep Brief
+# [[COURSE_CODE]] — Session [NN] Prep Brief
 **Class:** [date + time] [[ROOM]]
 **Topic:** [session topic]
 **Last updated:** [timestamp]
@@ -349,7 +355,7 @@ tech, regulation, capital markets — whatever is live and relevant to this topi
 ## YOUR TAKE
 *Clear position*
 
-**What should be done:** [Direct answer]
+**What to do:** [Direct answer]
 **Why:** [2–3 sentences of reasoning]
 **What to watch:** [The variable or signal that would change your view]
 
@@ -403,7 +409,7 @@ For every [[COURSE_CODE]] assignment due within 4 days, not yet submitted, not a
 ```
 ---
 DRAFT — DO NOT SUBMIT WITHOUT REVIEWING
-Course: [[COURSE CODE]]
+Course: [[COURSE_CODE]]
 Assignment: [name]
 Due: [date + time]
 Generated: [timestamp]
@@ -426,7 +432,7 @@ Generated: [timestamp]
 Save to: Session-[NN]/drafts/[AssignmentName].docx
 (via /tmp/canvas_[[COURSE_CODE]]_draft_[name].md → pandoc → .docx → rm temp)
 
-If draft exists: reconvert, append `## 🔄 Revision — [timestamp]`, reconvert.
+If draft exists: reconvert, append `## 🔄 Updated — [timestamp]`, reconvert.
 
 ---
 
@@ -437,7 +443,7 @@ File: [[BASE_DIR]]/REMINDERS.md
 Update existing [[COURSE_CODE]] block or append:
 
 ```
-## [[COURSE CODE]] — Session [NN] — updated [timestamp]
+## [[COURSE_CODE]] — Session [NN] — updated [timestamp]
 
 ### Drafts Ready for Review
 - [ ] [assignment] — due [date] — [[COURSE_CODE]]/Session-[NN]/drafts/[file].docx
@@ -462,16 +468,21 @@ Update existing [[COURSE_CODE]] block or append:
 ## STEP 6 — OBSIDIAN SESSION NOTE
 
 Vault: /Users/jacobjohnson/Documents/Obsidian Vault/
-Note path: Classes/[[COURSE_CODE]]/Session-[NN].md
+Note path: Classes/[[OBSIDIAN_FOLDER]]/Session-[NN].md
 
 Create or update the Obsidian session note for this session.
 
+**First — read `Classes/[[OBSIDIAN_FOLDER]].md`** to gather two things in one pass:
+1. Look for a heading matching this session's class date (`## YYYY-MM-DD` or
+   `## Session N — YYYY-MM-DD`) — if found, use that exact string as the "Class Notes" anchor.
+2. Check for the `## Sessions — Spring 2026` section — needed for the course index update below.
+
 **If creating fresh:**
-1. Create the folder `Classes/[[COURSE_CODE]]/` if it doesn't exist.
+1. `mkdir -p "/Users/jacobjohnson/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]]/"`
 2. Write the note as markdown to the path above.
 
 **If updating (note already exists):**
-- Re-read the existing note first.
+- Re-read the existing session note first.
 - Update the Quick Take, Key Facts, and Your Take from the new prep.docx.
 - Update the "Class Notes" link if a new Granola date entry now exists.
 - Append any new materials to the Files section.
@@ -490,7 +501,7 @@ topic: [Topic Name]
 
 # Session [N] — [Topic Name]
 
-**← [[Classes/[[COURSE_CODE]]/Session-[NN-1]|Session [N-1]]] · [[Classes/[[COURSE_CODE]]|[[COURSE_CODE]]]] · [[Classes/[[COURSE_CODE]]/Session-[NN+1]|Session [N+1]]] →**
+**← [[Classes/[[OBSIDIAN_FOLDER]]/Session-[NN-1]|Session [N-1]]] · [[Classes/[[OBSIDIAN_FOLDER]]|[[COURSE_CODE]]]] · [[Classes/[[OBSIDIAN_FOLDER]]/Session-[NN+1]|Session [N+1]]] →**
 
 ---
 
@@ -510,7 +521,7 @@ topic: [Topic Name]
 
 ## Session Thread
 
-*[2–3 sentences linking this session to adjacent sessions in [[COURSE_CODE]] only. Name the prior session and the specific connection.]*
+*[2–4 sentences linking this session to prior sessions in [[COURSE_CODE]] only. Name the prior session and the specific connection.]*
 
 ---
 
@@ -524,14 +535,14 @@ topic: [Topic Name]
 
 ## Class Notes
 
-*[If a Granola note exists for the class date: "Granola notes available: [[Classes/[[COURSE_CODE]]#YYYY-MM-DD]]". If the date header in the Granola file uses a different format (e.g. "Session N — YYYY-MM-DD"), match it exactly. If no Granola note yet: "No Granola note for [date] yet."]*
+*[If Granola entry found above: "Granola notes: [[Classes/[[OBSIDIAN_FOLDER]]#HEADING]]" using the exact heading string. If none: "No Granola note for [date] yet."]*
 
 ---
 
 ## Connections
 
-- Builds on → [[Classes/[[COURSE_CODE]]/Session-[NN-1]|Session [N-1] — [Prior topic]]]
-- Continues to → [[Classes/[[COURSE_CODE]]/Session-[NN+1]|Session [N+1]]]
+- Builds on → [[Classes/[[OBSIDIAN_FOLDER]]/Session-[NN-1]|Session [N-1] — [Prior topic]]]
+- Continues to → [[Classes/[[OBSIDIAN_FOLDER]]/Session-[NN+1]|Session [N+1]]]
 - Framework: [Key frameworks used this session]
 
 ---
@@ -544,14 +555,12 @@ topic: [Topic Name]
 [List any specific downloaded materials: - [📎 filename.pdf](file:///...)]
 ```
 
-**After writing the note:**
-Update the course's main Obsidian file (`Classes/[[COURSE_CODE]].md`):
-- If a `## Sessions — Spring 2026` section exists, add/update the line for this session.
-- If no such section exists, insert one right after the `# [Course] — Meeting Notes` title line.
+**After writing the note — update course index:**
+In `Classes/[[OBSIDIAN_FOLDER]].md` (already read above):
+- If `## Sessions — Spring 2026` exists, add/update the line for this session.
+- If not, insert the section right after the `# [Course] — Meeting Notes` title line.
 
-Format for the sessions line:
+Sessions line format:
 ```
-- [[Classes/[[COURSE_CODE]]/Session-[NN]|Session [N] — [Topic]]] · [Month Day]
+- [[Classes/[[OBSIDIAN_FOLDER]]/Session-[NN]|Session [N] — [Topic]]] · [Month Day]
 ```
-
-**Check for Granola note:** Before writing the "Class Notes" section, check the course's main Obsidian file for any `## YYYY-MM-DD` or `## Session N — YYYY-MM-DD` heading that matches this session's class date. Use that heading string as the anchor in the wiki-link.

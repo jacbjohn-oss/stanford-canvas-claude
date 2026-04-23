@@ -117,8 +117,14 @@ Skip this step if this is Session-01 (no prior session to sweep).
    **2b — Announcements:** get_announcements("[[COURSE_ID]]") — look for any post-class
    announcement referencing Session-[NN-1] (e.g. "here are today's slides", "recording posted",
    "correction to today's discussion"). Save the full result; Step 1-A should reuse it.
-3. If ANY new materials were found, append a `## 🔄 Post-Class Materials — [timestamp]` section
-   to the bottom of Session-[NN-1]/prep.docx listing what was added (reconvert via pandoc).
+3. If ANY new materials were found:
+   - Append a `## 🔄 Post-Class Materials — [timestamp]` section to the bottom of
+     Session-[NN-1]/prep.docx listing what was added (reconvert via pandoc).
+   - Update the Obsidian session note for Session-[NN-1]:
+     `/Users/jacobjohnson/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]]/Session-[NN-1].md`
+     Re-read the existing note, find the `## Files` section, and append each new file:
+     `- [📎 filename](file:///[[BASE_DIR_ENCODED]]/[[COURSE_CODE]]/Session-[NN-1]/materials/filename)`
+     (encode spaces as %20, `<>` as %3C%3E). If the note doesn't exist yet, skip this sub-step.
 
 ---
 
@@ -551,8 +557,10 @@ topic: [Topic Name]
 
 - [📄 Prep Brief](file:///Users/jacobjohnson/Desktop/Canvas%20%3C%3E%20Claude/[[COURSE_CODE]]/Session-[NN]/prep.docx)
 - [📚 Readings](file:///Users/jacobjohnson/Desktop/Canvas%20%3C%3E%20Claude/[[COURSE_CODE]]/Session-[NN]/readings.docx)
-- [📁 Materials](file:///Users/jacobjohnson/Desktop/Canvas%20%3C%3E%20Claude/[[COURSE_CODE]]/Session-[NN]/materials/)
-[List any specific downloaded materials: - [📎 filename.pdf](file:///...)]
+- [📁 Materials folder](file:///Users/jacobjohnson/Desktop/Canvas%20%3C%3E%20Claude/[[COURSE_CODE]]/Session-[NN]/materials/)
+[For each file in the materials/ directory, add a line:
+- [📎 filename](file:///Users/jacobjohnson/Desktop/Canvas%20%3C%3E%20Claude/[[COURSE_CODE]]/Session-[NN]/materials/filename)
+If the directory is empty or doesn't exist yet, omit — it will be filled by the post-class sweep.]
 ```
 
 **After writing the note — update course index:**

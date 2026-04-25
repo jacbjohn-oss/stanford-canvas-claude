@@ -405,6 +405,125 @@ tech, regulation, capital markets — whatever is live and relevant to this topi
 
 ---
 
+## STEP 3.5 — SESSION BRIEF (pre-class synthesis document)
+
+Create: `[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/session-brief.docx`
+
+This is the primary reference document for the session — denser and more comprehensive than prep.docx. It synthesizes every available source into one place. After class, the post-class-augment will update it in place with Granola notes and discussion synthesis. Your job here is to build the best possible pre-class version.
+
+### 3.5-A — Extract material content
+
+For every file in `[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/materials/`:
+
+```bash
+# PDFs and slides — extract text with pandoc:
+pandoc "[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/materials/[filename]" -t markdown 2>/dev/null
+
+# If pandoc returns empty or errors, try pdftotext for PDFs:
+pdftotext "[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/materials/[filename]" - 2>/dev/null
+
+# XLSX/spreadsheets — skip extraction, note as:
+# "📊 [filename] — spreadsheet, open manually"
+```
+
+Read the full extracted text. This is the actual slide and case content — do not skip or skim it.
+
+Also read the previous session's materials if they exist:
+`[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN-1]/materials/`
+
+### 3.5-B — Read Granola notes
+
+Read the Obsidian course file: `/Users/jacobjohnson/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]].md`
+
+Extract:
+- The most recent session's Granola notes (the class that just happened)
+- Any earlier sessions' notes that are directly relevant to this session's topic
+
+### 3.5-C — Write the session brief
+
+Using all sources — extracted material content, Granola notes, prep.docx, readings.docx, Context.md — write a comprehensive synthesis. Think of this as the document you would want 30 minutes before class if you had read nothing else.
+
+Write to `/tmp/canvas_[[COURSE_CODE]]_brief.md`, then convert:
+```bash
+pandoc "/tmp/canvas_[[COURSE_CODE]]_brief.md" -o "[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/session-brief.docx" --standalone
+ls -lh "[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/session-brief.docx" && rm "/tmp/canvas_[[COURSE_CODE]]_brief.md"
+```
+
+**Document structure:**
+
+```
+# [[COURSE_CODE]] — Session [N] — [Topic]
+[Date] | [Professor] | Pre-class brief
+
+---
+
+## The Session in One Paragraph
+[3–5 sentences. What is this session actually about? What question does it open or close?
+What's the tension the professor is trying to surface? Someone who hasn't read anything
+should finish this paragraph knowing exactly what to think about.]
+
+---
+
+## What's in the Materials
+[For each file in materials/: title, then a dense synthesis of its actual content.
+Not "these slides cover X" — actually summarize the frameworks, models, numbered
+steps, case facts, data, and key arguments from the slides/PDFs themselves.
+If it's a case PDF: characters, situation, key numbers, the decision required.
+If it's lecture slides: the frameworks presented, how they're sequenced, what
+the professor emphasized.]
+
+---
+
+## What the Readings Said
+[Synthesis of readings.docx — key arguments, frameworks, and evidence.
+Not a repeat of the full reading summaries — the most important 20% of each reading
+that will come up in class discussion.]
+
+---
+
+## Granola Thread
+[What happened in the most recent session (from Granola notes). What was debated,
+what was resolved, what was left open. What question this session likely picks up from.
+If no prior Granola notes exist: note that and skip this section.]
+
+---
+
+## The Analytical Framework to Use
+[The one or two frameworks from Context.md that are most active for this session.
+Stated clearly: "The core lens here is [X]. Apply it by [steps]. Common mistake: [Y]."]
+
+---
+
+## Case / Situation Deep Dive
+[If there's a case: full situation summary with numbers, the decision required,
+the stakeholders, the constraints. Dense. Every number and name that matters.]
+
+---
+
+## What the Professor Will Push On
+[From Context.md "What [Professor] Cares About" — the specific angles,
+depth signals, and framing choices this professor rewards. What earns points
+vs. what earns surface credit.]
+
+---
+
+## Discussion Questions — Loaded
+[5–7 questions likely to come up. For each: the question, the right answer,
+and the mechanism behind it. Not just "what would you do?" — the full analytical path.]
+
+---
+
+## Pre-Class Checklist
+- [ ] [Specific thing to know cold going in]
+- [ ] [Key number or fact to have ready]
+- [ ] [Framework to be able to apply on demand]
+- [ ] [Position to defend if cold-called]
+```
+
+If `session-brief.docx` already exists (from a previous run), read it first with pandoc, then update each section with new information. Preserve any post-class content (Granola synthesis) that may have been added by the post-class-augment.
+
+---
+
 ## STEP 4 — HOMEWORK DRAFTS
 
 For every [[COURSE_CODE]] assignment due within 4 days, not yet submitted, not an exam/quiz:

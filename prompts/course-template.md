@@ -54,10 +54,23 @@ get_course_files, get_file_info
 Base directory: [[BASE_DIR]]/[[COURSE_CODE]]/
 
 ## OUTPUT FORMAT
-All output files are .docx, created via pandoc:
-1. Write content as markdown to /tmp/canvas_[[COURSE_CODE]]_[type].md
-2. Convert: pandoc /tmp/canvas_[[COURSE_CODE]]_[type].md -o "[output path].docx" --standalone
-3. Delete temp file: rm /tmp/canvas_[[COURSE_CODE]]_[type].md
+
+All output files are .docx. Every file must be created using this exact three-step sequence — no exceptions:
+
+1. Write content as markdown to a temp file in /tmp/:
+   `cat > /tmp/canvas_[[COURSE_CODE]]_[type].md << 'MDEOF'\n[content]\nMDEOF`
+
+2. Convert with pandoc — **always double-quote both paths**:
+   `pandoc "/tmp/canvas_[[COURSE_CODE]]_[type].md" -o "[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/[filename].docx" --standalone`
+
+3. Verify the .docx was created, then delete the temp file:
+   `ls -lh "[[BASE_DIR]]/[[COURSE_CODE]]/Session-[NN]/[filename].docx" && rm "/tmp/canvas_[[COURSE_CODE]]_[type].md"`
+
+**CRITICAL — path quoting rules:**
+- The base directory `[[BASE_DIR]]` contains spaces and `<>` characters. Every shell command referencing it MUST wrap the full path in double quotes.
+- Never write .md or .docx files directly into the session folder — always go through /tmp/ first.
+- If pandoc fails, log the error clearly: "❌ pandoc failed for [filename]: [error]" and retry with the full quoted path before moving on.
+- Never leave orphaned .md files in session folders. If conversion succeeds, delete the temp file. If conversion fails after retrying, note it in REMINDERS.md and continue.
 
 ---
 
@@ -96,6 +109,7 @@ If Context.md does not exist yet, skip this step and continue.
 ---
 
 ## STEP 0.5 — SWEEP PREVIOUS SESSION FOR POST-CLASS MATERIALS
+
 
 Before prepping the next session, look back at the session that just ended (Session-[NN-1])
 and pick up anything the instructor posted after class: slides, lecture notes, case solutions,

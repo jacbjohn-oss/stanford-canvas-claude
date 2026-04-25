@@ -95,7 +95,7 @@ All output files are .docx. Every file must be created using this exact three-st
 ## STEP 0.1 — READ COURSE CONTEXT
 
 Read the living course intelligence file:
-/Users/jacobjohnson/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]]/Context.md
+/Users/jacobjohnson/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]]/Context.md
 
 This file distills the course's core frameworks, professor preferences, recurring patterns, common mistakes, and decision playbooks across all sessions to date. Use it throughout this prep run:
 
@@ -135,7 +135,7 @@ Skip this step if this is Session-01 (no prior session to sweep).
    - Append a `## 🔄 Post-Class Materials — [timestamp]` section to the bottom of
      Session-[NN-1]/prep.docx listing what was added (reconvert via pandoc).
    - Update the Obsidian session note for Session-[NN-1]:
-     `/Users/jacobjohnson/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]]/Session-[NN-1].md`
+     `/Users/jacobjohnson/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]]/Session-[NN-1].md`
      Re-read the existing note, find the `## Files` section, and append each new file:
      `- [📎 filename](file:///Users/jacobjohnson/Desktop/Canvas%20%3C%3E%20Claude/[[COURSE_CODE]]/Session-[NN-1]/materials/filename)`
      If the note doesn't exist yet, skip this sub-step.
@@ -433,7 +433,7 @@ Also read the previous session's materials if they exist:
 
 ### 3.5-B — Read Granola notes
 
-Read the Obsidian course file: `/Users/jacobjohnson/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]].md`
+Read the Obsidian course file: `/Users/jacobjohnson/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]].md`
 
 Extract:
 - The most recent session's Granola notes (the class that just happened)
@@ -612,7 +612,7 @@ Update existing [[COURSE_CODE]] block or append:
 
 ## STEP 6 — OBSIDIAN SESSION NOTE
 
-Vault: /Users/jacobjohnson/Documents/Obsidian Vault/
+Vault: /Users/jacobjohnson/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/
 Note path: Classes/[[OBSIDIAN_FOLDER]]/Session-[NN].md
 
 Create or update the Obsidian session note for this session.
@@ -623,7 +623,7 @@ Create or update the Obsidian session note for this session.
 2. Check for the `## Sessions — Spring 2026` section — needed for the course index update below.
 
 **If creating fresh:**
-1. `mkdir -p "/Users/jacobjohnson/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]]/"`
+1. `mkdir -p "/Users/jacobjohnson/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/Classes/[[OBSIDIAN_FOLDER]]/"`
 2. Write the note as markdown to the path above.
 
 **If updating (note already exists):**
